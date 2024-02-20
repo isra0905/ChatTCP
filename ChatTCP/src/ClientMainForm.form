@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ClientMainForm">
+  <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="600" height="400"/>
+    </constraints>
+    <properties>
+      <maximumSize width="600" height="250"/>
+      <minimumSize width="600" height="250"/>
+      <preferredSize width="600" height="250"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="3faf1" class="javax.swing.JTextField" binding="nameField">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <maximumSize width="2147483647" height="100"/>
+          <minimumSize width="49" height="100"/>
+          <preferredSize width="49" height="100"/>
+        </properties>
+      </component>
+      <component id="9a85e" class="javax.swing.JLabel" binding="label">
+        <constraints border-constraint="West"/>
+        <properties>
+          <maximumSize width="62" height="100"/>
+          <minimumSize width="62" height="100"/>
+          <preferredSize width="62" height="100"/>
+          <text value=" Nombre: "/>
+        </properties>
+      </component>
+      <grid id="c40d5" binding="buttonPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="East"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="3f8a" class="javax.swing.JButton" binding="buttonEnviar">
+            <constraints border-constraint="West"/>
+            <properties>
+              <maximumSize width="100" height="100"/>
+              <minimumSize width="100" height="100"/>
+              <preferredSize width="100" height="100"/>
+              <text value="Aceptar"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
