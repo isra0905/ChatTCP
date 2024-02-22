@@ -7,10 +7,11 @@ import java.util.ArrayList;
  * @author Israel
  */
 public class Server {
-    private static File chat = new File("chat_logs.log");
+    private static File chat = new File("./src/chat_logs.log");
     private static ArrayList<User> connectedUsers = new ArrayList<>();
 
     public static void main(String[] args) {
+
         try {
             if (!chat.exists()) chat.createNewFile();
             else{
