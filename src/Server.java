@@ -1,6 +1,4 @@
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -9,9 +7,21 @@ import java.util.ArrayList;
  * @author Israel
  */
 public class Server {
+    private static File chat = new File("chat_logs.log");
     private static ArrayList<User> connectedUsers = new ArrayList<>();
 
     public static void main(String[] args) {
+        try {
+            if (!chat.exists()) chat.createNewFile();
+            else{
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(chat))) {
+                } catch (IOException e) {
+                    System.err.println("Error clearing the file: " + e.getMessage());
+                }
+            }
+        } catch (IOException ex) {
+        }
+
         int port = 6001;
         ServerSocket server = null;
         try {
@@ -26,7 +36,8 @@ public class Server {
                 try {
                     output.writeInt(status = checkUser(u = (User) (input.readObject())));
                     if (status == 0) {
-                        synchronized (Thread.currentThread()){
+                        synchronized (Thread.currentThread()) {
+                            u.setConnectedSocket(cliente);
                             connectedUsers.add(u);
                         }
                         Thread hilo = new Thread(new HandlerThread(cliente));
@@ -54,17 +65,36 @@ public class Server {
         return 0;
     }
 
-    public synchronized static void removeUser(String id) {
-        System.out.println(id);
+
+    public synchronized static void removeUser(User u) {
+        connectedUsers.remove(u);
+    }
+
+    public synchronized static void closeUserSocket(String id) {
         for (User u : connectedUsers) {
             if (u.getId().equals(id)) {
-                System.out.println(u.getId());
-                connectedUsers.remove(u);
+                try {
+                    u.getConnectedSocket().close();
+                } catch (Exception ex) {
+
+                }
             }
         }
     }
 
     public synchronized static ArrayList<User> getConnectedUsers() {
         return connectedUsers;
+    }
+
+    public static void setConnectedUsers(ArrayList<User> connectedUsers) {
+        Server.connectedUsers = connectedUsers;
+    }
+
+    public static File getChat() {
+        return chat;
+    }
+
+    public static void setChat(File chat) {
+        Server.chat = chat;
     }
 }

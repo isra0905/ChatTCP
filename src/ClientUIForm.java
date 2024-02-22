@@ -2,22 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.DataInput;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
-import java.awt.*;
-import java.awt.event.*;
 
 /**
  * @author Israel
  */
 public class ClientUIForm {
+    private User user;
     private Socket socket;
     private JPanel mainPanel;
     private JButton enviarButton;
     private JTextArea typingArea;
-    private JList userList;
+    private JList<String> userList;
     private JTextArea messageArea;
     private JLabel userLabel;
     private JScrollPane messagePanel;
@@ -27,26 +27,36 @@ public class ClientUIForm {
     private JScrollPane userListPanel;
     private DataInputStream input = null;
     private DataOutputStream output = null;
+    private FormHandlerThread handler = null;
 
-    public ClientUIForm(Socket s) {
+    public ClientUIForm(Socket s, User u) {
+        this.user = u;
         this.socket = s;
-        try{
+        handler = new FormHandlerThread(s, this);
+        handler.start();
+
+        try {
             input = new DataInputStream(s.getInputStream());
             output = new DataOutputStream(s.getOutputStream());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         enviarButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                try {
+                    output.writeUTF("message");
+                    output.writeUTF(" " + user.getName() + ": " + typingArea.getText() + "\r\n");
+                    typingArea.setText("");
+                } catch (Exception ex) {
+                }
             }
         });
 
     }
 
-    public void activate(String username) {
+    public synchronized void activate(String username) {
         JFrame frame = new JFrame("Chat");
         this.bottomSplitPane.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         this.userLabel.setFont(this.userLabel.getFont().deriveFont(15f));
@@ -76,11 +86,12 @@ public class ClientUIForm {
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    try{
+                    try {
                         output.writeUTF("close");
-                    }catch (Exception ex){
-                        // JOptionPane.showMessageDialog(frame, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-                    }finally {
+                        handler.setRunning(false);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(frame, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                    } finally {
                         super.windowClosing(e);
                     }
                 }
@@ -88,5 +99,13 @@ public class ClientUIForm {
         });
 
         frame.setVisible(true);
+    }
+
+    public synchronized void setUserList(DefaultListModel model) {
+        this.userList.setModel(model);
+    }
+
+    public synchronized void setMessageArea(String content) {
+        this.messageArea.setText(content);
     }
 }

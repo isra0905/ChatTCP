@@ -29,9 +29,9 @@ public class ClientMainForm {
                         User u = new User(nameField.getText(), clientSocket.getInetAddress() + ":" + clientSocket.getLocalPort());
                         new ObjectOutputStream(clientSocket.getOutputStream()).writeObject(u);
                         int serverResponse = new DataInputStream(clientSocket.getInputStream()).readInt();
-                        switch (serverResponse){
+                        switch (serverResponse) {
                             case 0:
-                                ClientUIForm c = new ClientUIForm(clientSocket);
+                                ClientUIForm c = new ClientUIForm(clientSocket, u);
                                 c.activate(nameField.getText());
                                 mainFrame.dispose();
                                 break;
