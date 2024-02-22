@@ -40,7 +40,7 @@ public class FormHandlerThread extends Thread {
                         System.out.println("Case list");
                         DefaultListModel model = new DefaultListModel();
                         int j = input.readInt();
-                        for (int i = 0; i < j; i++){
+                        for (int i = 0; i < j; i++) {
                             String name = input.readUTF();
                             model.addElement(name);
                             System.out.println(name);

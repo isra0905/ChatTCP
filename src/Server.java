@@ -14,7 +14,7 @@ public class Server {
 
         try {
             if (!chat.exists()) chat.createNewFile();
-            else{
+            else {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(chat))) {
                 } catch (IOException e) {
                     System.err.println("Error clearing the file: " + e.getMessage());

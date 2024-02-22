@@ -78,6 +78,7 @@ public class HandlerThread implements Runnable {
             e.printStackTrace();
         }
     }
+
     public synchronized void sendMessage() {
         try {
             for (User u : Server.getConnectedUsers()) {
@@ -88,7 +89,8 @@ public class HandlerThread implements Runnable {
             e.printStackTrace();
         }
     }
-    public synchronized String getFileContent(File f){
+
+    public synchronized String getFileContent(File f) {
         String content = "", line;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(f));
@@ -96,7 +98,7 @@ public class HandlerThread implements Runnable {
                 content += line + "\r\n";
                 System.out.println(line);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
         }
         return content;
     }
