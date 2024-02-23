@@ -25,7 +25,7 @@ public class FormHandlerThread extends Thread {
             e.printStackTrace();
         }
 
-    }//fin constructor
+    }
 
     @Override
     public void run() {

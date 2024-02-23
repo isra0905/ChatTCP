@@ -25,19 +25,17 @@ public class ClientUIForm {
     private JPanel userPanel;
     private JScrollPane typingAreaScrollPanel;
     private JScrollPane userListPanel;
-    private DataInputStream input = null;
     private DataOutputStream output = null;
     private FormHandlerThread handler = null;
 
     public ClientUIForm(Socket s, User u) {
         this.user = u;
         this.socket = s;
-        handler = new FormHandlerThread(s, this);
+        handler = new FormHandlerThread(this.socket, this);
         handler.start();
 
         try {
-            input = new DataInputStream(s.getInputStream());
-            output = new DataOutputStream(s.getOutputStream());
+            output = new DataOutputStream(this.socket.getOutputStream());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -46,9 +44,11 @@ public class ClientUIForm {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    output.writeUTF("message");
-                    output.writeUTF(" " + user.getName() + ": " + typingArea.getText() + "\r\n");
-                    typingArea.setText("");
+                    if(!typingArea.getText().isBlank()){
+                        output.writeUTF("message");
+                        output.writeUTF(" " + user.getName() + ": " + typingArea.getText() + "\r\n");
+                        typingArea.setText("");
+                    }
                 } catch (Exception ex) {
                 }
             }
@@ -82,7 +82,7 @@ public class ClientUIForm {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
 
-        SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> { // Default action when the form is closed
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

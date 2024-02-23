@@ -20,7 +20,7 @@ public class HandlerThread implements Runnable {
             e.printStackTrace();
         }
 
-    }//fin constructor
+    }
 
     @Override
     public void run() {
@@ -45,7 +45,6 @@ public class HandlerThread implements Runnable {
                         checkConnectedUsers();
                         break;
                     case "connection":
-                        writer.flush();
                         checkConnectedUsers();
                         output.writeUTF("chat");
                         output.writeUTF(getFileContent(Server.getChat()));
