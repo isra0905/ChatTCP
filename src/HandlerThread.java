@@ -32,7 +32,6 @@ public class HandlerThread implements Runnable {
                 action = input.readUTF();
                 switch (action) {
                     case "close":
-                        System.out.println("Case close");
                         String id = client.getInetAddress() + ":" + client.getPort();
                         User userToRemove = null;
                         for (User u : Server.getConnectedUsers()) {
@@ -46,7 +45,6 @@ public class HandlerThread implements Runnable {
                         checkConnectedUsers();
                         break;
                     case "connection":
-                        System.out.println("Case connection");
                         writer.flush();
                         checkConnectedUsers();
                         output.writeUTF("chat");
@@ -56,7 +54,6 @@ public class HandlerThread implements Runnable {
                         writer.write(input.readUTF());
                         writer.flush();
                         sendMessage();
-                        System.out.println("Case message");
                         break;
                 }
             } catch (Exception ex) {
@@ -96,7 +93,6 @@ public class HandlerThread implements Runnable {
             BufferedReader reader = new BufferedReader(new FileReader(f));
             while ((line = reader.readLine()) != null) {
                 content += line + "\r\n";
-                System.out.println(line);
             }
         } catch (Exception ex) {
         }
