@@ -39,7 +39,7 @@ public class HandlerThread implements Runnable {
                                 userToRemove = u;
                             }
                         }
-                        Server.closeUserSocket(id);
+                        client.close();
                         Server.removeUser(userToRemove);
                         System.out.println("Closed socket --> " + id);
                         checkConnectedUsers();

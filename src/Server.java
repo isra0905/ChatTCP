@@ -71,18 +71,6 @@ public class Server {
         connectedUsers.remove(u);
     }
 
-    public synchronized static void closeUserSocket(String id) {
-        for (User u : connectedUsers) {
-            if (u.getId().equals(id)) {
-                try {
-                    u.getConnectedSocket().close();
-                } catch (Exception ex) {
-
-                }
-            }
-        }
-    }
-
     public synchronized static ArrayList<User> getConnectedUsers() {
         return connectedUsers;
     }
