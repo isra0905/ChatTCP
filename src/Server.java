@@ -87,15 +87,8 @@ public class Server {
         return connectedUsers;
     }
 
-    public static void setConnectedUsers(ArrayList<User> connectedUsers) {
-        Server.connectedUsers = connectedUsers;
-    }
-
     public static File getChat() {
         return chat;
     }
 
-    public static void setChat(File chat) {
-        Server.chat = chat;
-    }
 }
